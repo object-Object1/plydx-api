@@ -70,7 +70,7 @@ supertokens.init({
 const { MeiliSearch } = require('meilisearch')
 
 const app = express()
-const port = 3037
+const port = process.env.PORT || 5000
 db()
 
 app.use(cookieParser())
