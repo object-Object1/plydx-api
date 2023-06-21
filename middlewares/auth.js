@@ -9,7 +9,6 @@ app.use(cookieParser())
 
 
 function authMiddleware(req, res, next){
-    //user lodash for faster manipulation
     // console.log(req)
     const cookie = req.cookies
     console.log("cookie", cookie)

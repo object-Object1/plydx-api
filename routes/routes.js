@@ -192,8 +192,8 @@ app.post('/u/register', async(req, res) => {
 	// res.cookie("user", "kalzo", {httpOnly:false})
 	// res.end()
 	const { email, password , username } = req.query
-  const salt = await bcrypt.genSalt(10)
-  const hashedPassword = await bcrypt.hash(password, salt)
+    const salt = await bcrypt.genSalt(10)
+  	const hashedPassword = await bcrypt.hash(password, salt)
 	const user = new User({
 		username: username,
 		email: email,
@@ -208,10 +208,11 @@ app.post('/u/register', async(req, res) => {
             maxAge:2 * 60 * 60 * 1000 * 24 * 365
         }) //send cookie to client
 	    // res.header('x-auth-token', token)
+	    res.send({user: userObj})
 	    res.end()
-		console.log(userObj)
 
 	}
+
 	catch(err){
 		console.log(err.message)
 	}
@@ -224,20 +225,20 @@ app.post('/u/login', async(req, res) => {
 	const { email, password } = req.query
 	console.log(email, "email")
 	console.log(password, "password")
-    // res.cookie("user", "kaleb", {httpOnly:false})
 
 	const account = await User.findOne({email: email})
 	console.log("account", account)
 	if(account == null){
-		res.json({message: "failed"})
+		res.status(401).json({ message: "failed" });
 	}
 	else{
 		const match = await bcrypt.compare(password, account.password)
 		console.log("ismatch", match)
 		// console.log(match)
+		console.log(process.env.PRIVATE_JWT_KEY)
 		if(match){
 			const token = jwt.sign({id: account.id}, process.env.PRIVATE_JWT_KEY, {
-	            expiresIn: 2 * 60 * 60 * 1000 * 24 * 365
+	            expiresIn: "2d",
 	        })
 	        console.log("token", token)
 	        res.cookie('jwt', token, {
@@ -245,9 +246,10 @@ app.post('/u/login', async(req, res) => {
 	            httpOnly:false,
 
 	        })
-			// res.json({message: "success"})
-			res.end()
-		}
+			res.set('Authorization', `Bearer ${token}`); // Add JWT to response header
+      		res.status(200).json({ status: 200 });		
+
+      	}
 		else{
 			res.json({message: "failed"})
 			res.end()
