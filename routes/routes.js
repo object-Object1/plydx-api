@@ -82,7 +82,8 @@ app.use(bodyParser())
 // })
 
 app.use(cors({
-    origin: "https://plydx.netlify.app",
+    // origin: "https://plydx.netlify.app",
+    origin: "http://localhost:5524",
     allowedHeaders: ["content-type", ...supertokens.getAllCORSHeaders()],
     credentials: true,
 }));
@@ -246,8 +247,8 @@ app.post('/u/login', async(req, res) => {
 	            httpOnly:false,
 
 	        })
-			res.set('Authorization', `Bearer ${token}`); // Add JWT to response header
-      		res.status(200).json({ status: 200 });		
+			// res.set('Authorization', `Bearer ${token}`); // Add JWT to response header
+      		res.status(200).json({ status: 200, token: token});		
 
       	}
 		else{
