@@ -82,8 +82,7 @@ app.use(bodyParser())
 // })
 
 app.use(cors({
-    // origin: "https://plydx.netlify.app",
-    origin: "http://localhost:5524",
+    origin: "https://plydx.netlify.app",
     allowedHeaders: ["content-type", ...supertokens.getAllCORSHeaders()],
     credentials: true,
 }));
