@@ -208,7 +208,8 @@ app.post('/u/register', async(req, res) => {
             maxAge:2 * 60 * 60 * 1000 * 24 * 365
         }) //send cookie to client
 	    // res.header('x-auth-token', token)
-	    res.send({user: userObj})
+	    // res.send({user: userObj, token:token})
+	    res.status(201).json({token: token})
 	    res.end()
 
 	}
